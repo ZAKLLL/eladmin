@@ -1,5 +1,6 @@
 package me.zhengjie.modules.security.security;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,8 +24,11 @@ public class AuthUser {
 
     private String uuid = "";
 
+    @ApiModelProperty("是否为移动端登录")
+    private Boolean isMobile;
+
     @Override
     public String toString() {
-        return "{username=" + username  + ", password= ******}";
+        return "{username=" + username + ", password= ******}";
     }
 }

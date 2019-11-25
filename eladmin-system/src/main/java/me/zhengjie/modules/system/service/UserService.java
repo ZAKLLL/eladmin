@@ -1,6 +1,7 @@
 package me.zhengjie.modules.system.service;
 
 import me.zhengjie.modules.system.domain.User;
+import me.zhengjie.modules.system.domain.dto.UserDto;
 import me.zhengjie.modules.system.service.dto.UserDTO;
 import me.zhengjie.modules.system.service.dto.UserQueryCriteria;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import java.util.List;
  * @date 2018-11-23
  */
 public interface UserService {
+
 
     UserDTO findById(long id);
 
@@ -36,4 +38,8 @@ public interface UserService {
     List<UserDTO> queryAll(UserQueryCriteria criteria);
 
     void download(List<UserDTO> queryAll, HttpServletResponse response) throws IOException;
+
+    UserDTO register(UserDto userDto);
+
+    UserDTO findPassword(UserDto userDto);
 }
