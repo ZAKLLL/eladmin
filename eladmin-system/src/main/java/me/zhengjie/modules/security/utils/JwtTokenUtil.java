@@ -1,9 +1,12 @@
 package me.zhengjie.modules.security.utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClock;
 import me.zhengjie.modules.security.security.JwtUser;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -105,7 +108,7 @@ public class JwtTokenUtil implements Serializable {
                 .compact();
     }
 
-    public String getToken(HttpServletRequest request){
+    public String getToken(HttpServletRequest request) {
         final String requestHeader = request.getHeader(tokenHeader);
         if (requestHeader != null && requestHeader.startsWith("Bearer ")) {
             return requestHeader.substring(7);
@@ -125,6 +128,11 @@ public class JwtTokenUtil implements Serializable {
 
     private Date calculateExpirationDate(Date createdDate) {
         return new Date(createdDate.getTime() + expiration);
+    }
+
+    public static long getCurrentUserid() {
+        JwtUser principal = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return principal.getId();
     }
 }
 

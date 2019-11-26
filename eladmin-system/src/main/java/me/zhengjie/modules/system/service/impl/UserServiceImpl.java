@@ -1,11 +1,13 @@
 package me.zhengjie.modules.system.service.impl;
 
 import me.zhengjie.modules.monitor.service.RedisService;
+import me.zhengjie.modules.security.utils.JwtTokenUtil;
 import me.zhengjie.modules.system.domain.Role;
 import me.zhengjie.modules.system.domain.User;
 import me.zhengjie.exception.EntityExistException;
 import me.zhengjie.exception.EntityNotFoundException;
 import me.zhengjie.modules.system.domain.UserAvatar;
+import me.zhengjie.modules.system.domain.dto.DtoParam;
 import me.zhengjie.modules.system.domain.dto.UserDto;
 import me.zhengjie.modules.system.repository.UserAvatarRepository;
 import me.zhengjie.modules.system.repository.UserRepository;
@@ -179,7 +181,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable(key = "'loadUserByUsername:'+#p0")
+//    @Cacheable(key = "'loadUserByUsername:'+#p0")
     public UserDTO findByName(String userName) {
         User user;
         if (ValidationUtil.isEmail(userName)) {
@@ -247,5 +249,15 @@ public class UserServiceImpl implements UserService {
             list.add(map);
         }
         FileUtil.downloadExcel(list, response);
+    }
+
+    @Override
+    public void updateUserInfo(DtoParam.EditUserInfoParam userInfoParam) {
+        Optional<User> byId = userRepository.findById(JwtTokenUtil.getCurrentUserid());
+        byId.ifPresent(i -> {
+            i.setUsername(userInfoParam.getUserName());
+            i.setEmail(userInfoParam.getEmail());
+            i.setPhone(userInfoParam.getPhone());
+        });
     }
 }

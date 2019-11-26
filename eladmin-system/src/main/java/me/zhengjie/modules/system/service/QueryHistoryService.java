@@ -1,5 +1,8 @@
 package me.zhengjie.modules.system.service;
 
+import me.zhengjie.modules.system.domain.QueryHistory;
+import org.springframework.http.ResponseEntity;
+
 /**
  * @program: eladmin
  * @description:
@@ -8,4 +11,9 @@ package me.zhengjie.modules.system.service;
  **/
 public interface QueryHistoryService {
 
+    ResponseEntity addQueryHistory(QueryHistory queryHistory);
+
+    ResponseEntity getQueryhistory(int page, int size, boolean asc);
+
+    ResponseEntity delQueryhistory(long[] ids);
 }

@@ -7,6 +7,7 @@ import me.zhengjie.config.DataScope;
 import me.zhengjie.domain.VerificationCode;
 import me.zhengjie.modules.system.domain.User;
 import me.zhengjie.exception.BadRequestException;
+import me.zhengjie.modules.system.domain.dto.DtoParam;
 import me.zhengjie.modules.system.domain.dto.UserDto;
 import me.zhengjie.modules.system.domain.vo.UserPassVo;
 import me.zhengjie.modules.system.service.DeptService;
@@ -121,6 +122,14 @@ public class UserController {
     @PostMapping("/findPassword")
     public ResponseEntity findPassword(@Validated @RequestBody UserDto userDto) {
         return new ResponseEntity<>(userService.findPassword(userDto), HttpStatus.CREATED);
+    }
+
+    @Log("修改用户信息/username/phone/email")
+    @ApiOperation("修改用户信息/username/phone/email")
+    @PostMapping("/updateUserInfo")
+    public ResponseEntity updateUserInfo(@Validated @RequestBody DtoParam.EditUserInfoParam userInfoParam) {
+        userService.updateUserInfo(userInfoParam);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 

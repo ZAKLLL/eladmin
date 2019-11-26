@@ -11,4 +11,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * @create: 2019-11-25 14:54
  **/
 public interface QueryHistoryRepository extends JpaRepository<QueryHistory,Long> , JpaSpecificationExecutor<QueryHistory> {
+
 }

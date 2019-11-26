@@ -1,6 +1,17 @@
 package me.zhengjie.modules.system.service.impl;
 
+import me.zhengjie.modules.security.utils.JwtTokenUtil;
+import me.zhengjie.modules.system.domain.QueryHistory;
+import me.zhengjie.modules.system.domain.SiteCollection;
+import me.zhengjie.modules.system.repository.SiteCollectionRepository;
 import me.zhengjie.modules.system.service.SiteCollectionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +23,37 @@ import org.springframework.transaction.annotation.Transactional;
  * @create: 2019-11-25 15:07
  **/
 @Service
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
+@Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 public class SiteCollectionImpl implements SiteCollectionService {
+    @Autowired
+    private SiteCollectionRepository collectionRepository;
+
+    @Override
+    public ResponseEntity addSiteCollection(SiteCollection siteCollection) {
+        siteCollection.setUserId(JwtTokenUtil.getCurrentUserid());
+        collectionRepository.save(siteCollection);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity getSiteCollection(int page, int size, boolean asc, String keyWord) {
+        Sort sort = new Sort(asc ? Sort.Direction.ASC : Sort.Direction.DESC, "createTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<SiteCollection> res;
+        if (keyWord == null || keyWord.length() == 0) {
+            res = collectionRepository.findAll(pageable);
+        } else {
+            res = collectionRepository.findBySiteNameLike(keyWord, pageable);
+        }
+        return new ResponseEntity(res, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity delSiteCollection(long[] ids) {
+        for (long id : ids) {
+            collectionRepository.deleteById(id);
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }

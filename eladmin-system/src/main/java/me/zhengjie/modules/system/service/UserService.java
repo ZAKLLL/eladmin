@@ -1,6 +1,7 @@
 package me.zhengjie.modules.system.service;
 
 import me.zhengjie.modules.system.domain.User;
+import me.zhengjie.modules.system.domain.dto.DtoParam;
 import me.zhengjie.modules.system.domain.dto.UserDto;
 import me.zhengjie.modules.system.service.dto.UserDTO;
 import me.zhengjie.modules.system.service.dto.UserQueryCriteria;
@@ -42,4 +43,6 @@ public interface UserService {
     UserDTO register(UserDto userDto);
 
     UserDTO findPassword(UserDto userDto);
+
+    void updateUserInfo(DtoParam.EditUserInfoParam userInfoParam);
 }
