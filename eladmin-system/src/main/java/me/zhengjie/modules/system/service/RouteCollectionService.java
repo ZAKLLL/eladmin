@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 public interface RouteCollectionService {
     ResponseEntity addRouteCollection(RouteCollection routeCollection);
 
-    ResponseEntity getRouteCollection(int page, int size, boolean asc, String keyword);
+    ResponseEntity getRouteCollection(int page, int size, long userId, boolean asc, String keyword);
 
     ResponseEntity delRouteCollection(long[] ids);
 }

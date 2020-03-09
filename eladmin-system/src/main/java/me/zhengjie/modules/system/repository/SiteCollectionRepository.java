@@ -15,5 +15,7 @@ import sun.java2d.pipe.SolidTextRenderer;
  **/
 public interface SiteCollectionRepository extends JpaRepository<SiteCollection, Long>, JpaSpecificationExecutor<SiteCollection> {
 
-    Page<SiteCollection> findBySiteNameLike(String keyword, Pageable pageable);
+
+    Page<SiteCollection> findAllByUserIdAndSiteNameLike(Long userId,String keyword, Pageable pageable);
+    Page<SiteCollection> findAllByUserId(Long userId, Pageable pageable);
 }

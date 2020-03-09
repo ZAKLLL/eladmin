@@ -114,22 +114,22 @@ public class UserController {
     @ApiOperation("注册用户")
     @PostMapping("/register")
     public ResponseEntity register(@Validated @RequestBody UserDto userDto) {
-        return new ResponseEntity<>(userService.register(userDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResultMessage(userService.register(userDto)), HttpStatus.CREATED);
     }
 
     @Log("找回密码")
     @ApiOperation("找回密码")
     @PostMapping("/findPassword")
     public ResponseEntity findPassword(@Validated @RequestBody UserDto userDto) {
-        return new ResponseEntity<>(userService.findPassword(userDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResultMessage(userService.findPassword(userDto)), HttpStatus.CREATED);
     }
 
     @Log("修改用户信息/username/phone/email")
     @ApiOperation("修改用户信息/username/phone/email")
     @PostMapping("/updateUserInfo")
     public ResponseEntity updateUserInfo(@Validated @RequestBody DtoParam.EditUserInfoParam userInfoParam) {
-        userService.updateUserInfo(userInfoParam);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        return userService.updateUserInfo(userInfoParam);
     }
 
 
@@ -170,14 +170,14 @@ public class UserController {
             throw new BadRequestException("新密码不能与旧密码相同");
         }
         userService.updatePass(userDetails.getUsername(), EncryptUtils.encryptPassword(user.getNewPass()));
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(new ResultMessage(),HttpStatus.OK);
     }
 
     @ApiOperation("修改头像")
     @PostMapping(value = "/updateAvatar")
     public ResponseEntity updateAvatar(@RequestParam MultipartFile file) {
         userService.updateAvatar(file);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(new ResultMessage(),HttpStatus.OK);
     }
 
     @Log("修改邮箱")

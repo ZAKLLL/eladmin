@@ -1,10 +1,10 @@
 package me.zhengjie.modules.system.service.impl;
 
 import me.zhengjie.modules.security.utils.JwtTokenUtil;
-import me.zhengjie.modules.system.domain.QueryHistory;
 import me.zhengjie.modules.system.domain.SiteCollection;
 import me.zhengjie.modules.system.repository.SiteCollectionRepository;
 import me.zhengjie.modules.system.service.SiteCollectionService;
+import me.zhengjie.utils.ResultMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,20 +32,21 @@ public class SiteCollectionImpl implements SiteCollectionService {
     public ResponseEntity addSiteCollection(SiteCollection siteCollection) {
         siteCollection.setUserId(JwtTokenUtil.getCurrentUserid());
         collectionRepository.save(siteCollection);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(new ResultMessage(), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity getSiteCollection(int page, int size, boolean asc, String keyWord) {
+    public ResponseEntity getSiteCollection(int page, int size, long userId, boolean asc, String keyWord) {
         Sort sort = new Sort(asc ? Sort.Direction.ASC : Sort.Direction.DESC, "createTime");
+        long Id = userId == 0 ? JwtTokenUtil.getCurrentUserid() : userId;
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<SiteCollection> res;
         if (keyWord == null || keyWord.length() == 0) {
-            res = collectionRepository.findAll(pageable);
+            res = collectionRepository.findAllByUserId(Id, pageable);
         } else {
-            res = collectionRepository.findBySiteNameLike(keyWord, pageable);
+            res = collectionRepository.findAllByUserIdAndSiteNameLike(userId, "%"+keyWord+"%", pageable);
         }
-        return new ResponseEntity(res, HttpStatus.OK);
+        return new ResponseEntity(new ResultMessage(res), HttpStatus.OK);
     }
 
     @Override
@@ -53,7 +54,7 @@ public class SiteCollectionImpl implements SiteCollectionService {
         for (long id : ids) {
             collectionRepository.deleteById(id);
         }
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(new ResultMessage(), HttpStatus.OK);
     }
 
 }

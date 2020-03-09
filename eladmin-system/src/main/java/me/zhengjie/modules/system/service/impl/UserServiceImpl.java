@@ -24,6 +24,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -64,7 +64,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable
     public Object queryAll(UserQueryCriteria criteria, Pageable pageable) {
         Page<User> page = userRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(userMapper::toDto));
@@ -252,12 +251,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserInfo(DtoParam.EditUserInfoParam userInfoParam) {
+    public ResponseEntity updateUserInfo(DtoParam.EditUserInfoParam userInfoParam) {
         Optional<User> byId = userRepository.findById(JwtTokenUtil.getCurrentUserid());
-        byId.ifPresent(i -> {
-            i.setUsername(userInfoParam.getUserName());
-            i.setEmail(userInfoParam.getEmail());
-            i.setPhone(userInfoParam.getPhone());
-        });
+        User user = byId.get();
+        if (!user.getPhone().equals(userInfoParam.getPhone())) {
+            if (userRepository.findByPhone(userInfoParam.getPhone()) == null) {
+                user.setPhone(userInfoParam.getPhone());
+            } else throw new EntityExistException(User.class, "phone", "该手机号已经被注册");
+        }
+        if (!user.getEmail().equals(userInfoParam.getEmail())) {
+            if (userRepository.findByEmail(userInfoParam.getEmail()) == null) {
+                user.setEmail(userInfoParam.getEmail());
+            } else throw new EntityExistException(User.class, "email", "该邮箱号已经被注册");
+        }
+        if (!user.getUsername().equals(userInfoParam.getUserName())) {
+            if (userRepository.findByUsername(userInfoParam.getUserName()) == null) {
+                user.setUsername(userInfoParam.getUserName());
+            } else throw new EntityExistException(User.class, "username", "该用户名已经被注册");
+        }
+        userRepository.save(user);
+        return ResponseEntity.ok(new ResultMessage());
     }
+
 }

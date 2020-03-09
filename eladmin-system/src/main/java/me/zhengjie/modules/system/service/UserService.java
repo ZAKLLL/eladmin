@@ -6,6 +6,7 @@ import me.zhengjie.modules.system.domain.dto.UserDto;
 import me.zhengjie.modules.system.service.dto.UserDTO;
 import me.zhengjie.modules.system.service.dto.UserQueryCriteria;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -44,5 +45,5 @@ public interface UserService {
 
     UserDTO findPassword(UserDto userDto);
 
-    void updateUserInfo(DtoParam.EditUserInfoParam userInfoParam);
+    ResponseEntity updateUserInfo(DtoParam.EditUserInfoParam userInfoParam);
 }

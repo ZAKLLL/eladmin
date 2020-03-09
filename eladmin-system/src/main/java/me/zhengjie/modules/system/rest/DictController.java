@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
-* @author Zheng Jie
-* @date 2019-04-10
-*/
+ * @author Zheng Jie
+ * @date 2019-04-10
+ */
 @Api(tags = "系统：字典管理")
 @RestController
 @RequestMapping("/api/dict")
@@ -46,26 +46,26 @@ public class DictController {
     @ApiOperation("查询字典")
     @GetMapping
     @PreAuthorize("@el.check('dict:list')")
-    public ResponseEntity getDicts(DictQueryCriteria resources, Pageable pageable){
-        return new ResponseEntity<>(dictService.queryAll(resources,pageable),HttpStatus.OK);
+    public ResponseEntity getDicts(DictQueryCriteria resources, Pageable pageable) {
+        return new ResponseEntity<>(dictService.queryAll(resources, pageable), HttpStatus.OK);
     }
 
     @Log("新增字典")
     @ApiOperation("新增字典")
     @PostMapping
     @PreAuthorize("@el.check('dict:add')")
-    public ResponseEntity create(@Validated @RequestBody Dict resources){
+    public ResponseEntity create(@Validated @RequestBody Dict resources) {
         if (resources.getId() != null) {
-            throw new BadRequestException("A new "+ ENTITY_NAME +" cannot already have an ID");
+            throw new BadRequestException("A new " + ENTITY_NAME + " cannot already have an ID");
         }
-        return new ResponseEntity<>(dictService.create(resources),HttpStatus.CREATED);
+        return new ResponseEntity<>(dictService.create(resources), HttpStatus.CREATED);
     }
 
     @Log("修改字典")
     @ApiOperation("修改字典")
     @PutMapping
     @PreAuthorize("@el.check('dict:edit')")
-    public ResponseEntity update(@Validated(Dict.Update.class) @RequestBody Dict resources){
+    public ResponseEntity update(@Validated(Dict.Update.class) @RequestBody Dict resources) {
         dictService.update(resources);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -74,7 +74,7 @@ public class DictController {
     @ApiOperation("删除字典")
     @DeleteMapping(value = "/{id}")
     @PreAuthorize("@el.check('dict:del')")
-    public ResponseEntity delete(@PathVariable Long id){
+    public ResponseEntity delete(@PathVariable Long id) {
         dictService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }

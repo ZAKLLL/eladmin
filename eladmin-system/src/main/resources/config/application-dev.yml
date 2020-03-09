@@ -63,8 +63,8 @@ swagger:
 
 # 文件存储路径
 file:
-  path: C:\eladmin\file\
-  avatar: C:\eladmin\avatar\
+  path: /root/aigongjiao/file/
+  avatar: /root/aigongjiao/avatar/
   # 文件大小 /M
   maxSize: 100
   avatarMaxSize: 5

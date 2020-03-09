@@ -42,10 +42,10 @@ public class AigongjiaoController {
     }
 
     @Log("分页查询查询历史记录")
-    @ApiOperation("分页查询查询历史记录")
+    @ApiOperation("分页查询查询历史记录，客户端userId传0")
     @GetMapping("/queryhitory")
-    public ResponseEntity getQueryhitory(int page, int size, boolean asc) {
-        return queryHistoryService.getQueryhistory(page, size, asc);
+    public ResponseEntity getQueryhitory(int page, int size, long userId, boolean asc) {
+        return queryHistoryService.getQueryhistory(page, size,userId, asc);
     }
 
     @Log("删除查询历史记录")
@@ -57,16 +57,16 @@ public class AigongjiaoController {
 
     @Log("收藏站点")
     @ApiOperation("收藏站点")
-    @PostMapping("/siteCollection")
+    @PostMapping("/sitecollection")
     public ResponseEntity addSiteCollection(@Validated @RequestBody SiteCollection siteCollection) {
         return siteCollectionService.addSiteCollection(siteCollection);
     }
 
     @Log("查询站点")
-    @ApiOperation("查询站点")
-    @GetMapping("/siteCollection")
-    public ResponseEntity getSiteCollection(int page, int size, boolean asc, String keyWord) {
-        return siteCollectionService.getSiteCollection(page, size, asc, keyWord);
+    @ApiOperation("查询站点,客户端userId传0")
+    @GetMapping("/sitecollection")
+    public ResponseEntity getSiteCollection(int page, int size,long userId, boolean asc, String keyWord) {
+        return siteCollectionService.getSiteCollection(page, size,userId, asc, keyWord);
     }
 
     @Log("删除收藏站点")
@@ -91,10 +91,10 @@ public class AigongjiaoController {
     }
 
     @Log("分页查看路线")
-    @ApiOperation("分页查看路线")
+    @ApiOperation("分页查看路线，客户端userId传0")
     @GetMapping("/routecollection")
-    public ResponseEntity getRouteCollection(int page, int size, boolean asc, String keyword) {
-        return routeCollectionService.getRouteCollection(page, size, asc, keyword);
+    public ResponseEntity getRouteCollection(int page, int size,long userId, boolean asc, String keyword) {
+        return routeCollectionService.getRouteCollection(page, size, userId,asc, keyword);
     }
 
 

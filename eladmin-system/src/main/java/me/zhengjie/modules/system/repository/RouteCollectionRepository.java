@@ -14,6 +14,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  **/
 public interface RouteCollectionRepository extends JpaRepository<RouteCollection, Long>, JpaSpecificationExecutor<RouteCollection> {
 
-    Page<RouteCollection> findAllByBeginSiteOrEndSiteLike(String keyword, Pageable pageable);
+    Page<RouteCollection> findAllByUserIdAndBeginSiteLikeOrEndSiteLike(long userId, String k1,String k2, Pageable pageable);
+
+    Page<RouteCollection> findAllByUserId(long userId, Pageable pageable);
+
 
 }

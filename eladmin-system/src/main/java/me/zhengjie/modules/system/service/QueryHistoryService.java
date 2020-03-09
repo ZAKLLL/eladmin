@@ -13,7 +13,7 @@ public interface QueryHistoryService {
 
     ResponseEntity addQueryHistory(QueryHistory queryHistory);
 
-    ResponseEntity getQueryhistory(int page, int size, boolean asc);
+    ResponseEntity getQueryhistory(int page, int size, long userId, boolean asc);
 
     ResponseEntity delQueryhistory(long[] ids);
 }

@@ -56,7 +56,6 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    @Cacheable
     public List<Dept> findByPid(long pid) {
         return deptRepository.findByPid(pid);
     }

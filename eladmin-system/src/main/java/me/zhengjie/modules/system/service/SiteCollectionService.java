@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 public interface SiteCollectionService {
     ResponseEntity addSiteCollection(SiteCollection siteCollection);
 
-    ResponseEntity getSiteCollection(int page, int size, boolean asc, String keyWord);
+    ResponseEntity getSiteCollection(int page, int size, long userId, boolean asc, String keyWord);
 
     ResponseEntity delSiteCollection(long[] ids);
 
